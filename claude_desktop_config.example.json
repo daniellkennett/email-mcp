@@ -5,7 +5,9 @@
       "env": {
         "SMTP_HOST": "smtp.ionos.com",
         "SMTP_USER": "rose@starsupportus.com",
-        "SMTP_PASSWORD": "put-the-mailbox-password-here"
+        "SMTP_PASSWORD": "put-the-mailbox-password-here",
+        "_UNSUBSCRIBE_BASE_URL": "Put the web address of your unsubscribe page in the setting on the next line, for example https://starsupportus.com/unsubscribe. Leave it empty until that page exists and records opt-outs: empty blocks real sending, whereas a wrong address would put a dead unsubscribe link into real email.",
+        "UNSUBSCRIBE_BASE_URL": ""
       }
     }
   }
