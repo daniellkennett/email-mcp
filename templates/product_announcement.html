@@ -1,0 +1,106 @@
+<!-- subject: Introducing {{ product_name }} -->
+<!--
+  Template: product_announcement.html
+  Single-focus launch email: product name, tagline, product image, three features, one CTA.
+
+  Variables (all required; the send fails if any are unresolved):
+    product_name       Product name: subject and main heading.                     Example: Lantern Dashboards
+    tagline            One-line description under the product name (plain text).   Example: See every metric in one calm view.
+    preheader          Hidden inbox preview text.                                   Example: Now available to all Star Support customers.
+    product_image_url  Absolute https:// URL of the product image.                  Example: https://images.example.com/lantern-product.png
+    product_image_alt  Alt text describing the product image.                       Example: Dashboard showing three charts on a light background
+    feature_1          First feature, one short line (plain text).                  Example: Drag-and-drop report layouts
+    feature_2          Second feature, one short line (plain text).                 Example: Scheduled email summaries
+    feature_3          Third feature, one short line (plain text).                  Example: Shared views with your whole team
+    cta_label          Text on the call-to-action button.                           Example: Try it free
+    cta_url            Absolute https:// page the button links to.                  Example: https://www.example.com/lantern
+    company_address    Postal address for the footer (required by CAN-SPAM).        Example: 100 Example Way, Springfield, IL 62701
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Star Support product announcement</title>
+  <!--
+    Gmail strips much of <head>, including most <style> rules. Nothing below depends
+    on this block. The media query is progressive enhancement for narrow screens only.
+  -->
+  <style type="text/css">
+    @media screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .px-mobile { padding-left: 20px !important; padding-right: 20px !important; }
+      .h1-mobile { font-size: 26px !important; line-height: 32px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#EEF1F4; color:#1F2933; font-family:Helvetica,Arial,sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+  <!-- Preheader: hidden preview text for the inbox list. -->
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; mso-hide:all;">{{ preheader }}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#EEF1F4" style="background-color:#EEF1F4;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:600px; max-width:600px; background-color:#FFFFFF;">
+
+          <!-- Product image. bgcolor keeps a solid block visible when images are blocked. -->
+          <tr>
+            <td bgcolor="#E7F3F1" style="background-color:#E7F3F1;">
+              <img src="{{ product_image_url }}" width="600" height="340" alt="{{ product_image_alt }}" style="display:block; width:100%; max-width:600px; height:auto; border:0; outline:none; text-decoration:none; color:#134E48; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:22px;">
+            </td>
+          </tr>
+
+          <!-- Eyebrow, product name, tagline. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:32px 40px 8px 40px; background-color:#FFFFFF; font-family:Helvetica,Arial,sans-serif;">
+              <p style="margin:0 0 12px 0; font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:bold; color:#0F6B63;">New from Star Support</p>
+              <h1 class="h1-mobile" style="margin:0 0 12px 0; font-family:Helvetica,Arial,sans-serif; font-size:32px; line-height:38px; font-weight:bold; color:#1F2933;">{{ product_name }}</h1>
+              <p style="margin:0 0 24px 0; font-family:Helvetica,Arial,sans-serif; font-size:18px; line-height:26px; color:#1F2933;">{{ tagline }}</p>
+            </td>
+          </tr>
+
+          <!-- Three-item feature list. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:0 40px 32px 40px; background-color:#FFFFFF; font-family:Helvetica,Arial,sans-serif;">
+              <h2 style="margin:0 0 12px 0; font-family:Helvetica,Arial,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#1F2933;">What you get</h2>
+              <ul style="margin:0; padding:0 0 0 20px; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">
+                <li style="margin:0 0 8px 0;">{{ feature_1 }}</li>
+                <li style="margin:0 0 8px 0;">{{ feature_2 }}</li>
+                <li style="margin:0;">{{ feature_3 }}</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- Single CTA. Padded link inside a background-colored cell; no button element. -->
+          <tr>
+            <td align="center" class="px-mobile" bgcolor="#FFFFFF" style="padding:0 40px 40px 40px; background-color:#FFFFFF;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td bgcolor="#0F6B63" style="border-radius:6px; background-color:#0F6B63;">
+                    <a href="{{ cta_url }}" style="display:inline-block; padding:14px 32px; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:20px; font-weight:bold; color:#FFFFFF; text-decoration:none; border-radius:6px; background-color:#0F6B63;">{{ cta_label }}</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer: sender identity and postal address. The server appends its unsubscribe footer
+               after this block, before the closing body tag. Do not add an unsubscribe link here. -->
+          <tr>
+            <td align="center" class="px-mobile" bgcolor="#E4E9EE" style="padding:24px 40px; background-color:#E4E9EE; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">
+              <p style="margin:0 0 6px 0; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">Star Support</p>
+              <p style="margin:0; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">{{ company_address }}</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

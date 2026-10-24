@@ -1,0 +1,68 @@
+#!/bin/sh
+# Arch-portable launcher for the email-marketing MCP server.
+#
+# Claude Desktop starts MCP servers without a login shell, so it does not
+# inherit PATH and cannot find `uv` on its own. Homebrew also installs to a
+# different prefix per architecture: /opt/homebrew on Apple Silicon (M1-M4),
+# /usr/local on Intel. Rather than hardcode either, resolve uv at runtime.
+#
+# This script also derives the project directory from its own location, so the
+# repo can be moved or cloned to a different path without editing any config.
+#
+# stdout is the MCP stdio transport and must carry protocol frames only:
+# every diagnostic here goes to stderr.
+
+set -eu
+
+# Claude Desktop may hand us an almost-empty PATH, so standard utilities are
+# not guaranteed to resolve. Establish a baseline before anything else, and
+# derive our own location using only shell builtins (cd/pwd) -- not dirname.
+PATH="/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+export PATH
+
+# Walk any symlink chain so the repo still resolves when this script is
+# symlinked into ~/bin. readlink lives in /bin, covered by the PATH above.
+target=$0
+while [ -L "$target" ]; do
+    link=$(readlink "$target")
+    case $link in
+        /*) target=$link ;;
+        *)  target=${target%/*}/$link ;;
+    esac
+done
+
+script_dir=${target%/*}
+[ "$script_dir" = "$target" ] && script_dir=.
+project_dir=$(CDPATH= cd -- "$script_dir/.." && pwd -P)
+
+find_uv() {
+    if [ -n "${EMAIL_MCP_UV:-}" ] && [ -x "${EMAIL_MCP_UV}" ]; then
+        printf '%s\n' "${EMAIL_MCP_UV}"
+        return 0
+    fi
+    # Apple Silicon Homebrew, Intel Homebrew, uv standalone installer, cargo.
+    for candidate in \
+        /opt/homebrew/bin/uv \
+        /usr/local/bin/uv \
+        "$HOME/.local/bin/uv" \
+        "$HOME/.cargo/bin/uv"
+    do
+        [ -x "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
+    done
+    if command -v uv >/dev/null 2>&1; then
+        command -v uv
+        return 0
+    fi
+    return 1
+}
+
+if ! uv_bin=$(find_uv); then
+    echo "email-mcp: cannot find 'uv'." >&2
+    echo "  Install it:  curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
+    echo "  Or point at it:  EMAIL_MCP_UV=/full/path/to/uv" >&2
+    echo "  Searched: /opt/homebrew/bin (Apple Silicon), /usr/local/bin (Intel)," >&2
+    echo "            ~/.local/bin, ~/.cargo/bin, and PATH." >&2
+    exit 127
+fi
+
+exec "$uv_bin" run --directory "$project_dir" --python 3.12 email-mcp "$@"

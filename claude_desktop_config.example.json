@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "email-marketing": {
+      "command": "/Users/daniel.kennett/projects/email-mcp/bin/email-mcp-launch",
+      "env": {
+        "SMTP_HOST": "smtp.ionos.com",
+        "SMTP_USER": "rose@starsupportus.com",
+        "SMTP_PASSWORD": "put-the-mailbox-password-here"
+      }
+    }
+  }
+}

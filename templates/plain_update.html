@@ -1,0 +1,70 @@
+<!-- subject: {{ update_title }} -->
+<!--
+  Template: plain_update.html
+  Deliberately minimal, text-first update. No hero image, no button, one inline text link.
+  Keep it plain: this format is chosen for deliverability.
+
+  Variables (all required; the send fails if any are unresolved):
+    update_title     Email subject line (not repeated in the body).          Example: Your account update for August
+    preheader        Hidden inbox preview text.                                      Example: A short note about your account.
+    first_name       Recipient first name for the greeting.                          Example: Dana
+    body_text        Plain-text message, one or two short paragraphs (no HTML).      Example: We wanted to let you know that your billing address was updated on August 3. No action is needed.
+    link_label       Text of the one inline link.                                    Example: your account settings
+    link_url         Absolute https:// URL the link points to.                       Example: https://account.example.com/settings
+    company_address  Postal address for the footer (required by CAN-SPAM).           Example: 100 Example Way, Springfield, IL 62701
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Star Support update</title>
+  <!--
+    Gmail strips much of <head>, including most <style> rules. Nothing below depends
+    on this block. The media query is progressive enhancement for narrow screens only.
+  -->
+  <style type="text/css">
+    @media screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .px-mobile { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#FFFFFF; color:#1F2933; font-family:Helvetica,Arial,sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+  <!-- Preheader: hidden preview text for the inbox list. -->
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; mso-hide:all;">{{ preheader }}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
+    <tr>
+      <td align="center">
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:600px; max-width:600px; background-color:#FFFFFF;">
+
+          <!-- Body. Text only. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:24px 24px 16px 24px; background-color:#FFFFFF; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">
+              <p style="margin:0 0 16px 0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">Hi {{ first_name }},</p>
+              <p style="margin:0 0 16px 0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">{{ body_text }}</p>
+              <p style="margin:0 0 16px 0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">More details are in <a href="{{ link_url }}" style="color:#0F6B63; text-decoration:underline;">{{ link_label }}</a>.</p>
+              <p style="margin:0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">Thanks,<br>Rose<br>Star Support</p>
+            </td>
+          </tr>
+
+          <!-- Footer: sender identity and postal address. The server appends its unsubscribe footer
+               after this block, before the closing body tag. Do not add an unsubscribe link here. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:16px 24px 24px 24px; background-color:#FFFFFF; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">
+              <p style="margin:0; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">Star Support<br>{{ company_address }}</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

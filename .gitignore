@@ -1,0 +1,15 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+state/
+
+# Live subscriber lists are PII. Sample fixtures are force-added; see contacts/README.md.
+contacts/*.csv
+!contacts/subscribers.csv
+!contacts/vip_customers.csv
+
+# Resolved against an internal PyPI proxy on this machine, so the pinned URLs
+# are not portable to other machines. `uv sync` regenerates it per host.
+uv.lock
+.DS_Store

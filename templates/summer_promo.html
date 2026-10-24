@@ -1,0 +1,110 @@
+<!-- subject: Summer savings are here, {{ first_name }} -->
+<!--
+  Template: summer_promo.html
+  Seasonal promotional offer: hero image, headline, short body, discount-code callout, one CTA.
+
+  Variables (all required; the send fails if any are unresolved):
+    first_name       Recipient first name, used in the greeting and the subject.   Example: Dana
+    preheader        Hidden inbox preview text.                                      Example: Take 20% off everything through August 31.
+    headline         Main heading under the hero image.                              Example: Long days, bigger savings
+    body_copy        One short paragraph of plain text (no HTML).                    Example: Our summer sale covers the whole shop until the end of August.
+    hero_image_url   Absolute https:// URL of the hero image.                        Example: https://images.example.com/summer-hero.jpg
+    hero_image_alt   Alt text describing the hero image.                             Example: Striped beach towel on warm sand
+    discount_code    Promo code the reader enters at checkout.                       Example: SUMMER20
+    discount_expiry  Human-readable date the code stops working.                     Example: August 31, 2026
+    cta_label        Text on the call-to-action button.                              Example: Shop the sale
+    cta_url          Absolute https:// landing page the button links to.             Example: https://shop.example.com/summer
+    company_address  Postal address for the footer (required by CAN-SPAM).           Example: 100 Example Way, Springfield, IL 62701
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Star Support</title>
+  <!--
+    Gmail strips much of <head>, including most <style> rules. Nothing below depends
+    on this block. The media query is progressive enhancement for narrow screens only.
+  -->
+  <style type="text/css">
+    @media screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .px-mobile { padding-left: 20px !important; padding-right: 20px !important; }
+      .h1-mobile { font-size: 26px !important; line-height: 32px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#EEF1F4; color:#1F2933; font-family:Helvetica,Arial,sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+  <!-- Preheader: hidden preview text for the inbox list. -->
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; mso-hide:all;">{{ preheader }}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#EEF1F4" style="background-color:#EEF1F4;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:600px; max-width:600px; background-color:#FFFFFF;">
+
+          <!-- Hero image. bgcolor keeps a solid block visible when images are blocked. -->
+          <tr>
+            <td bgcolor="#0F6B63" style="background-color:#0F6B63;">
+              <img src="{{ hero_image_url }}" width="600" height="280" alt="{{ hero_image_alt }}" style="display:block; width:100%; max-width:600px; height:auto; border:0; outline:none; text-decoration:none; color:#FFFFFF; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:22px;">
+            </td>
+          </tr>
+
+          <!-- Headline and body. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:32px 40px 8px 40px; background-color:#FFFFFF; font-family:Helvetica,Arial,sans-serif;">
+              <p style="margin:0 0 12px 0; font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:bold; color:#0F6B63;">Limited-time offer</p>
+              <h1 class="h1-mobile" style="margin:0 0 16px 0; font-family:Helvetica,Arial,sans-serif; font-size:30px; line-height:36px; font-weight:bold; color:#1F2933;">{{ headline }}</h1>
+              <p style="margin:0 0 16px 0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">Hi {{ first_name }},</p>
+              <p style="margin:0 0 24px 0; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:24px; color:#1F2933;">{{ body_copy }}</p>
+            </td>
+          </tr>
+
+          <!-- Discount-code callout. The code is text, so it reads with images off. -->
+          <tr>
+            <td class="px-mobile" bgcolor="#FFFFFF" style="padding:0 40px 32px 40px; background-color:#FFFFFF;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#E7F3F1" style="background-color:#E7F3F1; border:1px solid #0F6B63; border-radius:6px;">
+                <tr>
+                  <td align="center" style="padding:20px 24px; font-family:Helvetica,Arial,sans-serif; color:#134E48;">
+                    <p style="margin:0 0 6px 0; font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; color:#134E48;">Use this code at checkout</p>
+                    <p style="margin:0 0 6px 0; font-family:Helvetica,Arial,sans-serif; font-size:28px; line-height:34px; font-weight:bold; letter-spacing:2px; color:#134E48;">{{ discount_code }}</p>
+                    <p style="margin:0; font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; color:#134E48;">Expires {{ discount_expiry }}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Single CTA. Padded link inside a background-colored cell; no button element. -->
+          <tr>
+            <td align="center" class="px-mobile" bgcolor="#FFFFFF" style="padding:0 40px 40px 40px; background-color:#FFFFFF;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td bgcolor="#0F6B63" style="border-radius:6px; background-color:#0F6B63;">
+                    <a href="{{ cta_url }}" style="display:inline-block; padding:14px 32px; font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:20px; font-weight:bold; color:#FFFFFF; text-decoration:none; border-radius:6px; background-color:#0F6B63;">{{ cta_label }}</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer: sender identity and postal address. The server appends its unsubscribe footer
+               after this block, before the closing body tag. Do not add an unsubscribe link here. -->
+          <tr>
+            <td align="center" class="px-mobile" bgcolor="#E4E9EE" style="padding:24px 40px; background-color:#E4E9EE; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">
+              <p style="margin:0 0 6px 0; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">Star Support</p>
+              <p style="margin:0; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; color:#4A5563;">{{ company_address }}</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
